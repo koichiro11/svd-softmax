@@ -18,7 +18,7 @@ svd-softmax implemented in Tensorflow by [Koichiro Tamura](http://koichirotamura
 
 ## Why this project?
 
-Since it is very important to redece calculation cost at softmax output in NL tasks, I tried to implement the idea in SVD-Softmax: Fast Softmax Approximation on Large Vocabulary Neural Networks](https://papers.nips.cc/paper/7130-svd-softmax-fast-softmax-approximation-on-large-vocabulary-neural-networks).
+Since it is very important to redece calculation cost at softmax output in NL tasks, I tried to implement the idea in [SVD-Softmax: Fast Softmax Approximation on Large Vocabulary Neural Networks](https://papers.nips.cc/paper/7130-svd-softmax-fast-softmax-approximation-on-large-vocabulary-neural-networks).
 However, there are some problems at the implement of svd-softmax in Tensorflow. So I would like to discuss them and I would like someone to tell me the solutions. 
 
 ## Problems to solve
