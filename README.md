@@ -9,7 +9,7 @@ svd-softmax implemented in Tensorflow by [Koichiro Tamura](http://koichirotamura
 
 ```
 We propose a fast approximation method of a softmax function with a very large vocabulary using singular value decomposition (SVD). SVD-softmax targets fast and accurate probability estimation of the topmost probable words during inference of neural network language models. The proposed method transforms the weight matrix used in the calculation of the output vector by using SVD. The approximate probability of each word can be estimated with only a small part of the weight matrix by using a few large singular values and the corresponding elements for most of the words. We applied the technique to language modeling and neural machine translation and present a guideline for good approximation. The algorithm requires only approximately 20\% of arithmetic operations for an 800K vocabulary case and shows more than a three-fold speedup on a GPU.
-
+```
 
 
 ## Requirements
@@ -23,11 +23,11 @@ However, there are some problems at the implement of svd-softmax in Tensorflow. 
 
 ## Problems to solve
 
-1. No gradient defined for operation SVD
+### No gradient defined for operation SVD
 
 SVD(singular value decomposition) method in Tensorflow [tf.svd()](https://www.tensorflow.org/api_docs/python/tf/svd) don't support gradient function in Tensorflow Graph. If you would like to use SVD-softmax in training, you have to implemnt trainable svd-function by yourself.  
 
-2. Too slow SVD-softmax in GPU
+### Too slow SVD-softmax in GPU
 
 Even when using svd-softmax in evaluation, calculation of svd-softmax is too slow.
 For example, I tried to use svd-softmax in [Transformer](https://arxiv.org/abs/1706.03762) using following hyperparameters or enviroments.
