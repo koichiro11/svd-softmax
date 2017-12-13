@@ -23,11 +23,11 @@ However, there are some problems at the implement of svd-softmax in Tensorflow. 
 
 ## Problems to solve
 
-1. No gradient defined for operation SVD
+### No gradient defined for operation SVD
 
 SVD(singular value decomposition) method in Tensorflow [tf.svd()](https://www.tensorflow.org/api_docs/python/tf/svd) don't support gradient function in Tensorflow Graph. If you would like to use SVD-softmax in training, you have to implemnt trainable svd-function by yourself.  
 
-2. Too slow SVD-softmax in GPU
+### Too slow SVD-softmax in GPU
 
 Even when using svd-softmax in evaluation, calculation of svd-softmax is too slow.
 For example, I tried to use svd-softmax in [Transformer](https://arxiv.org/abs/1706.03762) using following hyperparameters or enviroments.
