@@ -33,16 +33,16 @@ def svd_softmax(dec, tgt_vocab_size, hidden_units, window_size=2*5, num_full_vie
         B = tf.matmul(U, tf.diag(_s))
 
         _h = tf.einsum('ij,aj->ai', tf.transpose(V), dec_output)  # [batch_size*T_q, hidden]
-        _z = tf.add(tf.einsum('ij,aj->ai', B[:, :window_size], _h[:, :window_size]), biases)  # [N*T_q, voc]
+        _z = tf.add(tf.einsum('ij,aj->ai', B[:, :window_size], _h[:, :window_size]), biases)  # [batch_size*T_q, voc]
 
         top_k = tf.nn.top_k(_z, k=tgt_vocab_size)
-        _indices, values = top_k.indices, top_k.values  # [N*T_q, N]
+        _indices, values = top_k.indices, top_k.values  # [batch_size*T_q, N]
 
         _z = tf.add(tf.squeeze(tf.matmul(tf.gather(B, _indices[:, :num_full_view]), tf.expand_dims(_h, axis=-1))), tf.gather(biases, _indices[:, :num_full_view]))  # [N*T_q, N]
         _z = tf.concat([_z, values[:, num_full_view:]], axis=-1)
-        _z = tf.map_fn(lambda x: tf.gather(x[0], tf.invert_permutation(x[1])), (_z, _indices), dtype=(tf.float32))      # [N*T_q, voc]
+        _z = tf.map_fn(lambda x: tf.gather(x[0], tf.invert_permutation(x[1])), (_z, _indices), dtype=(tf.float32))      # [batch_size*T_q, voc]
         _z = tf.exp(_z)
-        Z = tf.expand_dims(tf.reduce_sum(_z, axis=-1), axis=1)      # [N*T_q, 1]
+        Z = tf.expand_dims(tf.reduce_sum(_z, axis=-1), axis=1)      # [batch_size*T_q, 1]
         logits = _z / Z
 
         return tf.reshape(logits, [-1, tf.shape(dec)[1], tgt_vocab_size])
