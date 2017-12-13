@@ -10,7 +10,7 @@ import tensorflow as tf
 import math
 
 
-def svd_softmax(dec, tgt_vocab_size, hidden_units, window_size=2*5, num_full_view=2**11):
+def svd_softmax(dec, tgt_vocab_size, hidden_units, window_size=2**5, num_full_view=2**11):
     """
     svd-softmax 
     :param dec: A Tensor [batch_size, seq_length, hidden_units], decoder output
