@@ -30,5 +30,6 @@ SVD(singular value decomposition) method in Tensorflow [tf.svd()](https://www.te
 ### more efficient codes for update Top-N words
 
 Since tensorflow uses static graph, it is difficult to update words by full-view vector multiplication.
+Because my codes aren't efficient now, the calculation is slow.
 If you can know more efficient way to implement, please tell me.
 
