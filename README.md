@@ -19,40 +19,16 @@ svd-softmax implemented in Tensorflow by [Koichiro Tamura](http://koichirotamura
 ## Why this project?
 
 Since it is very important to redece calculation cost at softmax output in NL tasks, I tried to implement the idea in [SVD-Softmax: Fast Softmax Approximation on Large Vocabulary Neural Networks](https://papers.nips.cc/paper/7130-svd-softmax-fast-softmax-approximation-on-large-vocabulary-neural-networks).
-However, there are some problems at the implement of svd-softmax in Tensorflow. So I would like to discuss them and I would like someone to tell me the solutions. 
 
-## Problems to solve
+
+## room for improvement 
 
 ### No gradient defined for operation SVD
 
-SVD(singular value decomposition) method in Tensorflow [tf.svd()](https://www.tensorflow.org/api_docs/python/tf/svd) don't support gradient function in Tensorflow Graph. If you would like to use SVD-softmax in training, you have to implemnt trainable svd-function by yourself.  
+SVD(singular value decomposition) method in Tensorflow [tf.svd()](https://www.tensorflow.org/api_docs/python/tf/svd) don't support gradient function in Tensorflow Graph. This means that you have to use other training method like NCE.  
 
-### Too slow SVD-softmax in GPU
+### more efficient codes for update Top-N words
 
-Even when using svd-softmax in evaluation, calculation of svd-softmax is too slow.
-For example, I tried to use svd-softmax in [Transformer](https://arxiv.org/abs/1706.03762) using following hyperparameters or enviroments.
-
-- vocabulary size = 30000
-- hidden units = 256
-- window size = 256
-- num of full view = 2048
-- JPO Japanses-Chinese corpus (1 milion pairs) 
-- 4x TITAN X (Pascal) (Liquid cooling
-- Ubuntu 16.04.1 LTS
-
-
-However, the calculation time is as follows in my experiments.
-
-- calculation full-softmax(codes are as follows): about 0.4sec
-
-```
-logits = tf.matmul(self.dec_output, tf.transpose(self.weights))
-logits = tf.nn.bias_add(logits, self.biases)
-logits = tf.nn.softmax(logits)
-```
-- tf.svd() line 32 in svd_softmax.py: about 2.5sec
-
-That is, calucation of SVD is slower than the speed of calculation of full-softmax.
-
-I don't know how to deal with this problem, so please tell me the solution if you can.
+Since tensorflow uses static graph, it is difficult to update words by full-view vector multiplication.
+If you can know more efficient way to implement, please tell me.
 
